@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Seeded Platformer</title>
+  <link rel="stylesheet" src="main.css">
+</head>
+<body>
+  <script src="main.js"></script>
+  <div id="starting_screen">
+    <h2>Input a seed or leave blank for a random seed</h2>
+    <input class="seed_input" placeholder="Seed" maxlength=15></input>
+    <button class="start" onclick="main()">Start Game</button>
+  </div>
+  <div class="game_container">
+    <canvas class="game" width="500px" height="500px"></canvas>
+    <h4 id="seed_txt">Seed: 0</h4>
+  </div>
+</body>
+</html>
