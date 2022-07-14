@@ -1,3 +1,6 @@
+const skins = qeurySelectorAll('.skin');
+var skin = skins[0]; 
+
 function main() {
 document.querySelector('#starting_screen').style.display = 'none';
 document.querySelector('.game_container').style.display = 'block';
@@ -87,8 +90,7 @@ function loop() {
     playerY = 300;
   }
   //ctx.clearRect(0, 0, 500, 500);
-  ctx.fillStyle = '#f00';
-  ctx.fillRect(playerX, playerY, 10, 10);
+  ctx.drawImage(skin, playerX, playerY);
   if (playerX > 500) {
     playerX = 10;
     playerY = 300;
