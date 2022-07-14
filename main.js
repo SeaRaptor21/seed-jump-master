@@ -1,4 +1,4 @@
-const skins = qeurySelectorAll('.skin');
+const skins = document.querySelectorAll('.skin');
 var skin = skins[0]; 
 
 function main() {
