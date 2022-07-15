@@ -1,5 +1,5 @@
 const skins = document.querySelectorAll('.skin');
-var skin = skins[0]; 
+var skin = skins[7]; 
 
 function main() {
 document.querySelector('#starting_screen').style.display = 'none';
@@ -72,6 +72,17 @@ function keyup(e) {
   keys[e.code] = false;
 }
 
+fuction get_colors_around() {
+  var colors = {'above':0,'below':0,'toLeft':0,'toRight':0};
+  for (var i = 0; i < 10; i++) {
+    var color = ctx.getImageData(playerX+i, playerY+10, 1, 1).data;
+  }
+  if (color[0] == 0 && color[1] == 170 && color[2] == 0) {
+    colors['below'] = 1;
+  }
+  return colors;
+}
+  
 var clearLevel = true;
 function loop() {
   var colorsBelow = ctx.getImageData(playerX, playerY+10, 10, 1).data;
