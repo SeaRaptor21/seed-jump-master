@@ -72,7 +72,7 @@ function keyup(e) {
   keys[e.code] = false;
 }
 
-fuction get_colors_around() {
+function get_colors_around() {
   var colors = {'above':0,'below':0,'toLeft':0,'toRight':0};
   for (var i = 0; i < 10; i++) {
     var color = ctx.getImageData(playerX+i, playerY+10, 1, 1).data;
