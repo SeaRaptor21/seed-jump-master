@@ -120,7 +120,7 @@ game = setInterval(loop, 10);
 function stop_game() {clearInterval(game);ctx.clearRect(0,0,500,500);}
 }
 
-document.addEventListener('load', function() {
+window.addEventListener('load', function() {
   const button = document.querySelector('button.start');
   button.addEventListener('click', main);
 });
