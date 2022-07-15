@@ -65,11 +65,16 @@ function make_level() {
   }
 }
 
+var keyup = true;
 function keydown(e) {
-  keys[e.code] = true;
+  if (keyup || !e.code == 'ArrowUp') {
+    keys[e.code] = true;
+  }
+  keyup = false;
 }
 
 function keyup(e) {
+  if (e.code == 'ArrowUp') {keyup = true;}
   keys[e.code] = false;
 }
 
