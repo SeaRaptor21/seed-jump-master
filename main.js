@@ -10,6 +10,7 @@ const c = document.querySelector('.game');
 const ctx = c.getContext('2d');
 var playerX = 10;
 var playerY = 300;
+var jumpTimer = 0;
 var keys = {'ArrowUp':false, 'ArrowLeft':false, 'ArrowRight':false}
 
 function mulberry32(seed) {
@@ -109,10 +110,13 @@ function loop() {
   //var colorsToRight = ctx.getImageData(playerX+10, playerY, 1, 10).data;
   //console.log(`${colors[0]}, ${colors[1]}, ${colors[2]}, ${colors[3]}`);
   var colors = get_colors_around();
+  if (colors['below']) {jumpTimer = 0;}
+  if (keys['ArrowUp']) {jumpTimer += 1;}
+  if (jumpTimer > 100) {jumpTimer = 0; keys['ArrowUp'] = false;}
   ctx.clearRect(playerX, playerY, 10, 10);
   if (!colors['toRight'] /*!(colorsToRight[0] == 0 && colorsToRight[1] == 170 && colorsToRight[2] == 0)*/) {playerX += keys['ArrowRight'] * 1;}
   if (playerX - keys['ArrowLeft'] * 1 > -1 && !colors['toLeft'] /*!(colorsToLeft[0] == 0 && colorsToLeft[1] == 170 && colorsToLeft[2] == 0)*/) {playerX -= keys['ArrowLeft'] * 1;}
-  if (colors['below'] && playerY - keys['ArrowUp'] * 1 > -1 && !colors['above'] /*!(colorsAbove[0] == 0 && colorsAbove[1] == 170 && colorsAbove[2] == 0)*/) {playerY -= keys['ArrowUp'] * 1;}
+  if ((colors['below'] || jumpTimer > 0) && playerY - keys['ArrowUp'] * 1 > -1 && !colors['above'] /*!(colorsAbove[0] == 0 && colorsAbove[1] == 170 && colorsAbove[2] == 0)*/) {playerY -= keys['ArrowUp'] * 1;}
   if (!keys['ArrowUp'] && !colors['below'] /*!(colorsBelow[0] == 0 && colorsBelow[1] == 170 && colorsBelow[2] == 0)*/) {playerY += 1;}
   // ERROR: Jumping up and down causes sinking into platform 
   if (playerY > 500) {
