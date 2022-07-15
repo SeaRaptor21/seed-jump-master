@@ -73,28 +73,47 @@ function keyup(e) {
 }
 
 function get_colors_around() {
-  var colors = {'above':0,'below':0,'toLeft':0,'toRight':0};
+  var colors = {'above':false,'below':false,'toLeft':false,'toRight':false};
+  for (var i = 0; i < 10; i++) {
+    var color = ctx.getImageData(playerX+i, playerY-11, 1, 1).data;
+    if (color[0] == 0 && color[1] == 170 && color[2] == 0) {
+      colors['above'] = true;
+    }
+  }
   for (var i = 0; i < 10; i++) {
     var color = ctx.getImageData(playerX+i, playerY+10, 1, 1).data;
+    if (color[0] == 0 && color[1] == 170 && color[2] == 0) {
+      colors['below'] = true;
+    }
   }
-  if (color[0] == 0 && color[1] == 170 && color[2] == 0) {
-    colors['below'] = 1;
+  for (var i = 0; i < 10; i++) {
+    var color = ctx.getImageData(playerX-1, playerY+i, 1, 1).data;
+    if (color[0] == 0 && color[1] == 170 && color[2] == 0) {
+      colors['toLeft'] = true;
+    }
+  }
+  for (var i = 0; i < 10; i++) {
+    var color = ctx.getImageData(playerX+10, playerY+i, 1, 1).data;
+    if (color[0] == 0 && color[1] == 170 && color[2] == 0) {
+      colors['toRight'] = true;
+    }
   }
   return colors;
 }
   
 var clearLevel = true;
 function loop() {
-  var colorsBelow = ctx.getImageData(playerX, playerY+10, 10, 1).data;
-  var colorsAbove = ctx.getImageData(playerX, playerY-1, 10, 1).data;
-  var colorsToLeft = ctx.getImageData(playerX-1, playerY, 1, 10).data;
-  var colorsToRight = ctx.getImageData(playerX+10, playerY, 1, 10).data;
+  //var colorsBelow = ctx.getImageData(playerX, playerY+10, 10, 1).data;
+  //var colorsAbove = ctx.getImageData(playerX, playerY-1, 10, 1).data;
+  //var colorsToLeft = ctx.getImageData(playerX-1, playerY, 1, 10).data;
+  //var colorsToRight = ctx.getImageData(playerX+10, playerY, 1, 10).data;
   //console.log(`${colors[0]}, ${colors[1]}, ${colors[2]}, ${colors[3]}`);
+  var colors = get_colors_around();
   ctx.clearRect(playerX, playerY, 10, 10);
-  if (!(colorsToRight[0] == 0 && colorsToRight[1] == 170 && colorsToRight[2] == 0)) {playerX += keys['ArrowRight'] * 1;}
-  if (playerX - keys['ArrowLeft'] * 1 > -1 && !(colorsToLeft[0] == 0 && colorsToLeft[1] == 170 && colorsToLeft[2] == 0)) {playerX -= keys['ArrowLeft'] * 1;}
-  if (playerY - keys['ArrowUp'] * 1 > -1 && !(colorsAbove[0] == 0 && colorsAbove[1] == 170 && colorsAbove[2] == 0)) {playerY -= keys['ArrowUp'] * 1;}
-  if (!keys['ArrowUp'] && !(colorsBelow[0] == 0 && colorsBelow[1] == 170 && colorsBelow[2] == 0)) {playerY += 1;}
+  if (!colors['toRight'] /*!(colorsToRight[0] == 0 && colorsToRight[1] == 170 && colorsToRight[2] == 0)*/) {playerX += keys['ArrowRight'] * 1;}
+  if (playerX - keys['ArrowLeft'] * 1 > -1 && !colors['toLeft'] /*!(colorsToLeft[0] == 0 && colorsToLeft[1] == 170 && colorsToLeft[2] == 0)*/) {playerX -= keys['ArrowLeft'] * 1;}
+  if (playerY - keys['ArrowUp'] * 1 > -1 && !colors['above'] /*!(colorsAbove[0] == 0 && colorsAbove[1] == 170 && colorsAbove[2] == 0)*/) {playerY -= keys['ArrowUp'] * 1;}
+  if (!keys['ArrowUp'] && !colors['below'] /*!(colorsBelow[0] == 0 && colorsBelow[1] == 170 && colorsBelow[2] == 0)*/) {playerY += 1;}
   // ERROR: Jumping up and down causes sinking into platform 
   if (playerY > 500) {
     playerX = 10;
