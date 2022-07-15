@@ -112,7 +112,7 @@ function loop() {
   ctx.clearRect(playerX, playerY, 10, 10);
   if (!colors['toRight'] /*!(colorsToRight[0] == 0 && colorsToRight[1] == 170 && colorsToRight[2] == 0)*/) {playerX += keys['ArrowRight'] * 1;}
   if (playerX - keys['ArrowLeft'] * 1 > -1 && !colors['toLeft'] /*!(colorsToLeft[0] == 0 && colorsToLeft[1] == 170 && colorsToLeft[2] == 0)*/) {playerX -= keys['ArrowLeft'] * 1;}
-  if (playerY - keys['ArrowUp'] * 1 > -1 && !colors['above'] /*!(colorsAbove[0] == 0 && colorsAbove[1] == 170 && colorsAbove[2] == 0)*/) {playerY -= keys['ArrowUp'] * 1;}
+  if (colors['below'] && playerY - keys['ArrowUp'] * 1 > -1 && !colors['above'] /*!(colorsAbove[0] == 0 && colorsAbove[1] == 170 && colorsAbove[2] == 0)*/) {playerY -= keys['ArrowUp'] * 1;}
   if (!keys['ArrowUp'] && !colors['below'] /*!(colorsBelow[0] == 0 && colorsBelow[1] == 170 && colorsBelow[2] == 0)*/) {playerY += 1;}
   // ERROR: Jumping up and down causes sinking into platform 
   if (playerY > 500) {
