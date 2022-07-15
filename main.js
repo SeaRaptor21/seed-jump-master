@@ -67,7 +67,7 @@ function make_level() {
 
 var keyupVar = true;
 function keydown(e) {
-  if (keyupVar || !e.code == 'ArrowUp') {
+  if (keyupVar || (!e.code == 'ArrowUp)') {
     keys[e.code] = true;
   }
   keyupVar = false;
