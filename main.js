@@ -75,7 +75,7 @@ function keyup(e) {
 function get_colors_around() {
   var colors = {'above':false,'below':false,'toLeft':false,'toRight':false};
   for (var i = 0; i < 10; i++) {
-    var color = ctx.getImageData(playerX+i, playerY-11, 1, 1).data;
+    var color = ctx.getImageData(playerX+i, playerY-1, 1, 1).data;
     if (color[0] == 0 && color[1] == 170 && color[2] == 0) {
       colors['above'] = true;
     }
