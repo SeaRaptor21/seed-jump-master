@@ -65,16 +65,11 @@ function make_level() {
   }
 }
 
-var keyupVar = true;
 function keydown(e) {
-  if (keyupVar || (!e.code == 'ArrowUp')) {
-    keys[e.code] = true;
-  }
-  keyupVar = false;
+  keys[e.code] = true;
 }
 
 function keyup(e) {
-  if (e.code == 'ArrowUp') {keyupVar = true;}
   keys[e.code] = false;
 }
 
@@ -117,7 +112,7 @@ function loop() {
   var colors = get_colors_around();
   if (colors['below']) {jumpTimer = 0;}
   if (keys['ArrowUp']) {jumpTimer += 1;}
-  if (jumpTimer > 100) {jumpTimer = 0; keys['ArrowUp'] = false;}
+  if (jumpTimer > 50) {/*jumpTimer = 0;*/ keys['ArrowUp'] = false;}
   ctx.clearRect(playerX, playerY, 10, 10);
   if (!colors['toRight'] /*!(colorsToRight[0] == 0 && colorsToRight[1] == 170 && colorsToRight[2] == 0)*/) {playerX += keys['ArrowRight'] * 1;}
   if (playerX - keys['ArrowLeft'] * 1 > -1 && !colors['toLeft'] /*!(colorsToLeft[0] == 0 && colorsToLeft[1] == 170 && colorsToLeft[2] == 0)*/) {playerX -= keys['ArrowLeft'] * 1;}
