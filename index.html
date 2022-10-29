@@ -7,7 +7,16 @@
   <link rel="stylesheet" href="main.css" />
 </head>
 <body>
-  <div id="skin_container" style="display: none;">
+  <div id="starting_screen">
+    <h2>Input a seed or leave blank for a random seed</h2>
+    <input class="seed_input" placeholder="Seed" maxlength=15></input>
+    <button class="start">Start Game</button>
+  </div>
+  <div class="game_container">
+    <h3 id="level_txt">Level: 1</h3>
+    <canvas class="game" width="500px" height="500px"></canvas>
+    <h4 id="seed_txt">Seed: 0</h4>
+  <div id="img_container" style="display: none;">
     <img class="skin" src="skins/0.png" />
     <img class="skin" src="skins/1.png" />
     <img class="skin" src="skins/2.png" />
@@ -17,14 +26,16 @@
     <img class="skin" src="skins/6.png" />
     <img class="skin" src="skins/dev.png" />
   </div>
-  <div id="starting_screen">
-    <h2>Input a seed or leave blank for a random seed</h2>
-    <input class="seed_input" placeholder="Seed" maxlength=15></input>
-    <button class="start">Start Game</button>
+  <div id="skin_container">
+    <div class="skin_div current_skin" data-locked=0 data-skin=0 style="background: url(skins/0.png); background-size: cover;"/>
+    <div class="skin_div locked" data-locked=1 data-skin=1 style="background: url(skins/1.png); background-size: cover;"/>
+    <div class="skin_div locked" data-locked=1 data-skin=2 style="background: url(skins/2.png); background-size: cover;"/>
+    <div class="skin_div locked" data-locked=1 data-skin=3 style="background: url(skins/3.png); background-size: cover;"/>
+    <div class="skin_div locked" data-locked=1 data-skin=4 style="background: url(skins/4.png); background-size: cover;"/>
+    <div class="skin_div locked" data-locked=1 data-skin=5 style="background: url(skins/5.png); background-size: cover;"/>
+    <div class="skin_div locked" data-locked=1 data-skin=6 style="background: url(skins/6.png); background-size: cover;"/>
+    <div class="skin_div locked" data-locked=1 data-skin=7 style="background: url(skins/dev.png); background-size: cover;"/>
   </div>
-  <div class="game_container">
-    <canvas class="game" width="500px" height="500px"></canvas>
-    <h4 id="seed_txt">Seed: 0</h4>
   </div>
   <script src="main.js"></script>
 </body>
