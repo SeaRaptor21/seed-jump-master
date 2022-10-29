@@ -17,7 +17,42 @@ body {
 }
 
 .game_container {
-  display: none
+  display: none;
+}
+
+.skin_div {
+  //display: flex;
+  position: relative;
+  width: 4vw;
+  height: 4vw;
+  margin-left: 5.5vw;
+  margin-right: 5.5vw;
+}
+
+.locked::after {
+  pointer-events: none;
+  content: '';
+  //display: inline-block;
+  position: absolute;
+  width: 3vw;
+  height: 3vw;
+  top: 0.5vw;
+  left: 0.35vw;
+  background: url(https://upload.wikimedia.org/wikipedia/commons/6/64/Lock_Icon.svg);
+}
+
+.current_skin {
+  width: 5vw;
+  height: 5vw;
+  margin-left: 4.5vw;
+  margin-right: 4.5vw;
+}
+
+
+#skin_container {
+  display: flex;
+  align-items: center;
+  text-align: center;
 }
 
 h2 {
