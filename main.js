@@ -1,5 +1,5 @@
 const skins = document.querySelectorAll('.skin');
-var skin = skins[7]; 
+var skin = skins[0]; 
 
 function main() {
 document.querySelector('#starting_screen').style.display = 'none';
@@ -12,6 +12,11 @@ var playerX = 10;
 var playerY = 300;
 var jumpTimer = 0;
 var keys = {'ArrowUp':false, 'ArrowLeft':false, 'ArrowRight':false}
+var level = 1;
+var speed = 1;
+var jump_speed = 1;
+var gravity = 1;
+var jump_height = 50;
 
 function mulberry32(seed) {
   // This is using Mulberry32, made by tommyettinger
@@ -43,7 +48,6 @@ function make_level_not_seed() {
     top += randint(-50, 50);
     top = Math.max(Math.min(top, 450-height), 50+height);
     ctx.fillRect(left, top, width, height);
-    //ctx.strokeRect(left, top, width, height);
     left += width;
   }
 }
@@ -60,7 +64,6 @@ function make_level() {
     top += rand(-50, 50);
     top = Math.max(Math.min(top, 450-height), 50+height);
     ctx.fillRect(left, top, width, height);
-    //ctx.strokeRect(left, top, width, height);
     left += width;
   }
 }
@@ -104,30 +107,32 @@ function get_colors_around() {
   
 var clearLevel = true;
 function loop() {
-  //var colorsBelow = ctx.getImageData(playerX, playerY+10, 10, 1).data;
-  //var colorsAbove = ctx.getImageData(playerX, playerY-1, 10, 1).data;
-  //var colorsToLeft = ctx.getImageData(playerX-1, playerY, 1, 10).data;
-  //var colorsToRight = ctx.getImageData(playerX+10, playerY, 1, 10).data;
-  //console.log(`${colors[0]}, ${colors[1]}, ${colors[2]}, ${colors[3]}`);
   var colors = get_colors_around();
+  if ((!colors['below'] && jumpTimer == 0) || colors['above']) {jumpTimer = jump_height;}
   if (colors['below']) {jumpTimer = 0;}
   if (keys['ArrowUp']) {jumpTimer += 1;}
-  if (jumpTimer > 50) {/*jumpTimer = 0;*/ keys['ArrowUp'] = false;}
+  if (jumpTimer > jump_height) {keys['ArrowUp'] = false;}
   ctx.clearRect(playerX, playerY, 10, 10);
-  if (!colors['toRight'] /*!(colorsToRight[0] == 0 && colorsToRight[1] == 170 && colorsToRight[2] == 0)*/) {playerX += keys['ArrowRight'] * 1;}
-  if (playerX - keys['ArrowLeft'] * 1 > -1 && !colors['toLeft'] /*!(colorsToLeft[0] == 0 && colorsToLeft[1] == 170 && colorsToLeft[2] == 0)*/) {playerX -= keys['ArrowLeft'] * 1;}
-  if ((colors['below'] || jumpTimer > 0) && playerY - keys['ArrowUp'] * 1 > -1 && !colors['above'] /*!(colorsAbove[0] == 0 && colorsAbove[1] == 170 && colorsAbove[2] == 0)*/) {playerY -= keys['ArrowUp'] * 1;}
-  if (!keys['ArrowUp'] && !colors['below'] /*!(colorsBelow[0] == 0 && colorsBelow[1] == 170 && colorsBelow[2] == 0)*/) {playerY += 1;}
-  // ERROR: Jumping up and down causes sinking into platform 
+  if (!colors['toRight']) {playerX += keys['ArrowRight'] * speed;}
+  if (playerX - keys['ArrowLeft'] * 1 > -1 && !colors['toLeft']) {playerX -= keys['ArrowLeft'] * speed;}
+  if ((colors['below'] || jumpTimer > 0) && playerY - keys['ArrowUp'] * 1 > -1 && !colors['above']) {playerY -= keys['ArrowUp'] * jump_speed;}
+  if (!keys['ArrowUp'] && !colors['below']) {playerY += gravity;}
   if (playerY > 500) {
     playerX = 10;
     playerY = 300;
   }
-  //ctx.clearRect(0, 0, 500, 500);
   ctx.drawImage(skin, playerX, playerY);
   if (playerX > 500) {
     playerX = 10;
     playerY = 300;
+    level += 1
+    if (level == 5) {document.querySelectorAll('.skin_div')[1].dataset.locked = 0; document.querySelectorAll('.skin_div')[1].classList.remove('locked');}
+    if (level == 10) {document.querySelectorAll('.skin_div')[2].dataset.locked = 0; document.querySelectorAll('.skin_div')[2].classList.remove('locked');}
+    if (level == 15) {document.querySelectorAll('.skin_div')[3].dataset.locked = 0; document.querySelectorAll('.skin_div')[3].classList.remove('locked');}
+    if (level == 25) {document.querySelectorAll('.skin_div')[4].dataset.locked = 0; document.querySelectorAll('.skin_div')[4].classList.remove('locked');}
+    if (level == 50) {document.querySelectorAll('.skin_div')[5].dataset.locked = 0; document.querySelectorAll('.skin_div')[5].classList.remove('locked');}
+    if (level == 100) {document.querySelectorAll('.skin_div')[6].dataset.locked = 0; document.querySelectorAll('.skin_div')[6].classList.remove('locked');}
+    document.querySelector('#level_txt').innerHTML = "Level: "+String(level)
     make_level();
   }
 }
@@ -141,6 +146,59 @@ document.querySelector('#seed_txt').innerHTML = 'Seed: '+SEED.toString(36);
 // ERROR: Numbers inputed can sometimes translate wrong
 game = setInterval(loop, 10);
 function stop_game() {clearInterval(game);ctx.clearRect(0,0,500,500);}
+
+document.addEventListener('click', e => {
+  if (e.target.matches('.skin_div') && e.target.dataset.locked == 0) {
+    document.querySelectorAll('.skin_div').forEach(s => {s.classList.remove('current_skin');});
+    e.target.classList.add('current_skin');
+    skin = skins[e.target.dataset.skin];
+  }
+})
+
+const cheat_code = 'I AM A DEV 1 1 2 3 5 8 13 21';
+const cheat_code1 = 'BREAK DA LOCKS';
+const cheat_code2 = 'SKIPPY';
+const cheat_code3 = "&&((%'%'BA ";
+var code = '';
+//console.log(String.fromCharCode(13))
+window.addEventListener('keydown',function(e) {
+  //console.log(e.keyCode)
+  code = (code+String.fromCharCode(e.keyCode || e.which));
+  if( code.substr(-1*cheat_code.length) == cheat_code) {
+    //window.removeEventListener('keydown',arguments.callee);
+    document.querySelectorAll('.skin_div')[7].dataset.locked = 0;
+    document.querySelectorAll('.skin_div')[7].classList.remove('locked');
+    document.querySelectorAll('.skin_div').forEach(s => {s.classList.remove('current_skin');});
+    document.querySelectorAll('.skin_div')[7].classList.add('current_skin');
+    skin = skins[7];
+  }
+  else if (code.substr(-1*cheat_code1.length) == cheat_code1) {
+    //window.removeEventListener('keydown',arguments.callee);
+    document.querySelectorAll('.skin_div')[1].dataset.locked = 0; document.querySelectorAll('.skin_div')[1].classList.remove('locked');
+    document.querySelectorAll('.skin_div')[2].dataset.locked = 0; document.querySelectorAll('.skin_div')[2].classList.remove('locked');
+    document.querySelectorAll('.skin_div')[3].dataset.locked = 0; document.querySelectorAll('.skin_div')[3].classList.remove('locked');
+    document.querySelectorAll('.skin_div')[4].dataset.locked = 0; document.querySelectorAll('.skin_div')[4].classList.remove('locked');
+    document.querySelectorAll('.skin_div')[5].dataset.locked = 0; document.querySelectorAll('.skin_div')[5].classList.remove('locked');
+    document.querySelectorAll('.skin_div')[6].dataset.locked = 0; document.querySelectorAll('.skin_div')[6].classList.remove('locked');
+  }
+  else if (code.substr(-1*cheat_code2.length) == cheat_code2) {
+    playerX = 10;
+    playerY = 300;
+    level += 1
+    if (level == 5) {document.querySelectorAll('.skin_div')[1].dataset.locked = 0; document.querySelectorAll('.skin_div')[1].classList.remove('locked');}
+    if (level == 10) {document.querySelectorAll('.skin_div')[2].dataset.locked = 0; document.querySelectorAll('.skin_div')[2].classList.remove('locked');}
+    if (level == 15) {document.querySelectorAll('.skin_div')[3].dataset.locked = 0; document.querySelectorAll('.skin_div')[3].classList.remove('locked');}
+    if (level == 25) {document.querySelectorAll('.skin_div')[4].dataset.locked = 0; document.querySelectorAll('.skin_div')[4].classList.remove('locked');}
+    if (level == 50) {document.querySelectorAll('.skin_div')[5].dataset.locked = 0; document.querySelectorAll('.skin_div')[5].classList.remove('locked');}
+    if (level == 100) {document.querySelectorAll('.skin_div')[6].dataset.locked = 0; document.querySelectorAll('.skin_div')[6].classList.remove('locked');}
+    document.querySelector('#level_txt').innerHTML = "Level: "+String(level)
+    make_level();
+  }
+  else if (code.substr(-1*cheat_code3.length) == cheat_code3) {
+    jump_height = 100;
+    jump_speed = 2;
+  }
+},false);
 }
 
 window.addEventListener('load', function() {
